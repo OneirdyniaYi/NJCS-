@@ -21,7 +21,95 @@
 15.C
 16.D
 17.A
-
+21.
+  1)队空rear==front;队满(rear+1)%m==front;这种方法会牺牲一个存储空间;
+  2)(rear+m-front)%m
+  3)进队出队返回值若为true则成功，否则失败;
+    class que{
+      private:
+              type a[m];
+              int rear,front;
+      public:
+              bool enQueue(type x);
+              bool deQueue(type &x);
+    }
+    bool enQueue(type x){
+      if((rear+1)%m==front) return false;
+      a[++rear] = x;
+      return true;
+    }
+    bool deQueue(type &x){
+      if(rear == front) return false;
+      x = a[front--];
+      return true;
+    }
+22.
+  1)         
+     34-------> 16,34 ----------->   19      ------------->   19        ------------>  19      ------------>    19,34
+                                    /  \                    /    \                    /   \                    /   |   \
+                                16       34               16      21,34             5,16   21,34            5,16   21   49
+  2)设返回一个三元组
+    sturct tri{
+      BtreeNode *ptr;
+      bool suc;
+      int index;
+    }
+    tri Search(int x,BtreeNode *root){
+        BtreeNode *p = root,*q = NULL;
+        tri res;
+        while(p!=NULL){
+            int i=0;
+            while(i<p.n&&p->key[i]<x) i++;
+            if(p->key[i]==x){
+                res.ptr = p;
+                res.suc = true;
+                res.index = i;
+                return res;
+            }
+            q = p;
+            p = p->ptr[i];
+        }
+        res.ptr = q;
+        res.index = -1;
+        res.suc = false;
+        return res;
+    }
+23.
+   1)二叉树遍历时间都是O(n),递归深度为O(n)
+     int height(Tnode* t){
+         if(t==NULL) return -1;
+         return 1+max(height(t->leftchild),height(t->rightchild));
+     }
+   2)直径即左子树的深度+1加上右子树的深度+1 +1
+     int dist(Tnode *t){
+         if(t==NULL) return 0;
+         return height(t->leftchild)+height(t->rightchild)+3;
+     }
+24.
+   1) int *solution(int x){
+          int i=0;
+          int res[n];
+          while(x){
+             res[i++] = x/2^(n-i-1);
+             x %= 2^(n-i-1);
+          }
+          return res;
+      }  
+   这是一个贪心算法，因为由二进制可知任何一个2^n之内的数可唯一表示。因为2^n-1=1+2+2^2+...+2^(n-1);2^n=2*2^(n-1)所以不存在一个数可以用更少的面值的数表示，因此为贪心。
+   2) 设面值数组value[n]={d1,d2,...,dn};dp数组res[N]表示兑换N元最少的钱数;
+      res[0] = 0;
+      for(int i=i;i<N+1;i++){
+          int mincount = MAX_INT;
+          for(int j=0;j<n&&value[j]<=i;j++)
+              mincount = min(res[i-value[j]]+1,mincount);
+          res[i] = mincount;
+      }
+      算法时间复杂度为O(n^2);空间复杂度为O(n);
+25.
+    
+  
+          
+2018真题答案
 
 
 
